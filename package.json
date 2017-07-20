@@ -1,0 +1,28 @@
+{
+  "name": "magento2-client",
+  "version": "1.0.0",
+  "description": "This is a client for connecting to a Magento2 API.",
+  "main": "magento2.js",
+  "scripts": {
+    "test": "npm test",
+    "watch": "nodemon --harmony index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amnotafraid/magento2-client.git"
+  },
+  "keywords": [
+    "Magento2",
+    "API",
+    "client",
+    "Node.js",
+    "REST"
+  ],
+  "author": "Bessie Malek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amnotafraid/magento2-client/issues"
+  },
+  "homepage": "https://github.com/amnotafraid/magento2-client#readme",
+  "dependencies": {}
+}
