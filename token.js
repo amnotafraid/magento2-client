@@ -59,7 +59,7 @@ module.exports = function(baseUrl, adminUsername, adminPassword) {
         response += chunk;
       });
       res.on('end', function() {
-        resolve(response);
+        resolve(JSON.parse(response));
       });
     });
 
