@@ -33,14 +33,13 @@ function getLocation(href) {
  * Magento2 constructor
  *
  * @param  string baseUrl
- * @param  string adminUsername
- * @param  string adminPassword
+ * @param  string token
  * @param  object options
  */
-var Magento2 = function(baseUrl, adminUsername, adminPassword, options) {
+var Magento2 = function(baseUrl, token, options) {
 
   if (baseUrl) {
-    this.init(baseUrl, adminUsername, adminPassword, options);
+    this.init(baseUrl, token, options);
   }
 };
 
@@ -48,11 +47,10 @@ var Magento2 = function(baseUrl, adminUsername, adminPassword, options) {
  * Initialize client parameters
  *
  * @param  string baseUrl
- * @param  string adminUsername
- * @param  string adminPassword
+ * @param  string token
  * @param  object options
  */
-Magento2.prototype.init = function(baseUrl, adminUsername, adminPassword, options) {
+Magento2.prototype.init = function(baseUrl, token, options) {
 
   options = options || {};
 
@@ -64,58 +62,17 @@ Magento2.prototype.init = function(baseUrl, adminUsername, adminPassword, option
 
   this.params = {
     baseUrl: baseUrl,
-    adminUsername: adminUsername,
-    adminPassword: adminPassword,
     protocol: (location.protocol == 'https' ? https : http),
     host: location.host,
     port: options.port || DEFAULT_PORT,
+    token: token,
   };
 
   if (!this.params.baseUrl) {
     throw new Error('Magento2 `baseUrl` of Magento site is required to initialize');
   }
-  if (!this.params.adminUsername) {
-    throw new Error('Magento2 `adminUsername` of Magento backend is required to initialize');
-  }
-  if (!this.params.adminPassword) {
-    throw new Error('Magento2 `adminPassword` of Magento backend is required to initialize');
-  }
-
-  let data = {
-    username: this.params.adminUsername,
-    password: this.params.adminPassword
-  };
-
-  var options = {
-    host: this.params.host,
-    path: '/rest/V1/integration/admin/token',
-    method: 'POST',
-    headers: {
-			'Content-Type': 'application/json',
-		}
-  };
-
-  var self = this;
-
-  var req = this.params.protocol.request(options, 
-    function(res) {
-      var response = '';
-      res.on('data', function (chunk) {
-        response += chunk;
-      });
-      res.on('end', function() {
-				self.params.token = response;
-      });
-    });
-
-  req.on('error', function(e) {
-    let errStr = `Failed to get token, errno = ${e.errno}`;
-    throw new Error(errStr);
-  });
-
-  req.write(JSON.stringify(data));
-  req.end();
 };
+
 
 /**
  * Magento2 request handler
@@ -260,13 +217,12 @@ Magento2.prototype.promisifyData = function(data) {
  * Magento2 create/init helper
  *
  * @param  string baseUrl
- * @param  string adminUsername
- * @param  string adminPassword
+ * @param  string token
  * @param  object options
  * @return Magento2
  */
-Magento2.create = function(baseUrl, adminUsername, adminPassword, options) {
-  return new Magento2(baseUrl, adminUsername, adminPassword, options);
+Magento2.create = function(baseUrl, token, options) {
+  return new Magento2(baseUrl, token, options);
 };
 
 // Exports
