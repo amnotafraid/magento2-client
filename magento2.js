@@ -5,7 +5,8 @@
 const http          = require('http');
 const https         = require('https');
 
-var DEFAULT_PORT = 80;
+const DEFAULT_PORT = 80;
+const DEFAULT_VERSION = 'V1'
 
 /**
  * getLocation
@@ -16,7 +17,7 @@ var DEFAULT_PORT = 80;
  * @param string href
  */
 function getLocation(href) {
-    var match = href.match(/^(https)?\:\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
+    let match = href.match(/^(https)?\:\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
     return match && {
         href: href,
 				protocol: match[1],
@@ -56,7 +57,7 @@ Magento2.prototype.init = function(baseUrl, adminUsername, adminPassword, option
 
   options = options || {};
 
-  var location = getLocation(baseUrl);
+  let location = getLocation(baseUrl);
 
   if (location.protocol !== 'https') {
     console.log(`WARNING! live Magento installs should have https protocol`);
@@ -70,6 +71,7 @@ Magento2.prototype.init = function(baseUrl, adminUsername, adminPassword, option
 		adminUsername: adminUsername,
 		adminPassword: adminPassword,
     token: '',
+    version: options.version || DEFAULT_VERSION,
   };
 
   if (!this.params.baseUrl) {
@@ -111,6 +113,14 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
 		totalUrl += urlParamString;
 	}
 
+	let aPromises = self.promisifyData(data);
+
+	if (aPromises.length) {
+		return Promise.all(aPromises).bind(this).then(function() {
+			this.request(method, url, urlParams, data, callback);
+		});
+	}
+	
 	let req;
 
   if (callback) {
@@ -127,7 +137,7 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
 
       req = self.params.protocol.request(options, 
         function(res) {
-          var response = '';
+          let response = '';
           res.on('data', function (chunk) {
             response += chunk;
           });
@@ -150,86 +160,47 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
     });
   }
   else {
+    return self.getTokenPromise ().then(() => {
+      return new Promise(function (resolve, reject) {
+        let options = {
+          host: self.params.host,
+          path: totalUrl,
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + self.params.token,
+          }
+        };
+
+        req = self.params.protocol.request(options, function(res) {
+          let response = '';
+          res.on('data', function (chunk) {
+            response += chunk;
+          });
+          res.on('end', function() {
+            if (res.statusCode === 200) {
+              resolve(JSON.parse(response));
+            }
+            else {
+              reject(response.message);
+            }
+          });
+        });
+
+        req.on('error', function(e) {
+          reject(e.message);
+        });
+
+        req.write(JSON.stringify(data));
+        req.end();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 };
 
-
-/**
- * Magento2 requestPromise handler
- *
- * @param  string method
- * @param  string url
- * @param  mixed urlParams
- * @param  mixed data
- */
-Magento2.prototype.requestPromise = function(method, url, urlParams, data) {
-
-  let self = this;
-	let totalUrl = '/rest';
-	let urlParamString = '';
-
-	if (Object.keys(urlParams).length > 0) {
-		urlParamString += Object.keys(urlParams).map(function(k) {
-			return encodeURIComponent(k) + '=' + encodeURIComponent(urlParams[k]);
-		}).join('&');
-	}
-
-	totalUrl += url;
-
-	if (urlParamString.length > 0) {
-		totalUrl += '?';
-		totalUrl += urlParamString;
-	}
-
-	let promisesReq = self.promisifyData(data);
-
-	if (promisesReq.length) {
-		return Promise.all(promisesReq).bind(this).then(function() {
-			this.request(method, url, urlParams, data, callback);
-		});
-	}
-	
-	let req;
-
-	return self.getTokenPromise ().then(() => {
-		return new Promise(function (resolve, reject) {
-      let options = {
-        host: self.params.host,
-        path: totalUrl,
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + self.params.token,
-        }
-      };
-
-			req = self.params.protocol.request(options, function(res) {
-				var response = '';
-				res.on('data', function (chunk) {
-					response += chunk;
-				});
-				res.on('end', function() {
-          if (res.statusCode === 200) {
-            resolve(JSON.parse(response));
-          }
-          else {
-            reject(response.message);
-          }
-				});
-			});
-
-			req.on('error', function(e) {
-				reject(e.message);
-			});
-
-			req.write(JSON.stringify(data));
-			req.end();
-		});
-	})
-	.catch((err) => {
-		console.log(err);
-	});
-};
 
 /**
  * Resolve and return promises array from data
@@ -250,18 +221,18 @@ Magento2.prototype.promisifyData = function(data) {
     });
   }
 
-  var promises = [];
+  let promises = [];
   if (typeof data === 'object') {
-    var keys = Object.keys(data);
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
+    let keys = Object.keys(data);
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
       if (data[key] && data[key].then) {
         promises.push(data[key]);
         thenResolvePromisedValue(data, key);
       }
     }
   } else if (data instanceof Array) {
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       if (data[i] && data[i].then) {
         promises.push(data[i]);
         thenResolvePromisedValue(data, i);
@@ -285,7 +256,7 @@ Magento2.prototype.getTokenCallback = function(callback) {
   else {
     let options = {
       host: self.params.host,
-      path: '/rest/V1/integration/admin/token',
+      path: '/rest/' + self.params.version + '/integration/admin/token',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -298,7 +269,7 @@ Magento2.prototype.getTokenCallback = function(callback) {
     };
 
     let req = self.params.protocol.request(options, function(res) {
-      var response = '';
+      let response = '';
       res.on('data', function (chunk) {
         response += chunk;
       });
@@ -323,7 +294,7 @@ Magento2.prototype.getTokenCallback = function(callback) {
 };
 
 /**
- * Magento2 getToken
+ * Magento2 getTokenPromise
  *
  * @return object Promise
  */
@@ -336,7 +307,7 @@ Magento2.prototype.getTokenPromise = function() {
 		else {
 			let options = {
 				host: self.params.host,
-				path: '/rest/V1/integration/admin/token',
+				path: '/rest/' + self.params.version + '/integration/admin/token',
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -349,7 +320,7 @@ Magento2.prototype.getTokenPromise = function() {
 			};
 
 			let req = self.params.protocol.request(options, function(res) {
-				var response = '';
+				let response = '';
 				res.on('data', function (chunk) {
 					response += chunk;
 				});
@@ -373,6 +344,7 @@ Magento2.prototype.getTokenPromise = function() {
 		}
   });
 };
+
 /**
  * Magento2 create/init helper
  *
