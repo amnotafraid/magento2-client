@@ -1,16 +1,16 @@
-# shipperhq-client
-Access ShipperHQ API
+# magento2-client
+Access Magento2 API
 
 ## Install with npm
 
 npm install shipperhq-client
 
 ## usage
-
+```
 const Magento     = require('./magento2');
 
 var magento = new Magento('https://www.example.com', 'username', 'password', {});
-
+```
 With callback:
 ```
 magento.request('GET', //method
