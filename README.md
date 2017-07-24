@@ -90,10 +90,12 @@ where the parameters are defined as follows:
       </td>
       <td align="left">
 				A JSON object. This is key values of url parameters.  Example: 
+```
                 { 
                   'searchCriteria[pageSize]': 10,
                   'searchCriteria[currentPage]': 1 
                 }
+```
       </td>
     </tr>
     <tr>
@@ -102,6 +104,7 @@ where the parameters are defined as follows:
       </td>
       <td align="left">
 				A JSON object. This is the body of the request.  Example:
+```
             {
                 "entity": {
                     "carrierCode":"UPS",
@@ -111,7 +114,10 @@ where the parameters are defined as follows:
                     "trackNumber":"12345678"
                 }
             }
+```
       </td>
+    </tr>
+    <tr>
       <td align="left">
 				callback
       </td>
@@ -170,11 +176,13 @@ magento.request('GET',                    //method
     console.log(err);
   });
 
-magento.request('GET', //method
-                '/V1/products', //url
-                { 'searchCriteria[pageSize]': 10,
-                  'searchCriteria[currentPage]': 1 }, //urlParams
-                {}) //data
+magento.request('GET',                    //method
+                '/V1/products',           //url
+                {                         //urlParams
+                  'searchCriteria[pageSize]': 10,
+                  'searchCriteria[currentPage]': 1 
+                }, 
+                {})                       //data
   .then((data) => { 
     console.log('products = ' + JSON.stringify(data, null, 2));
   })
