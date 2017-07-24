@@ -20,7 +20,7 @@ You can create a Magento2-Client with this information:
 				baseUrl
       </td>
       <td align="left">
-				A string. This is the URL of the front end of the Magento2 install.  Example `https://www.example.com`.
+				A string. This is the URL of the front end of the Magento2 install.  Example <pre>https://www.example.com</pre>.
       </td>
 		</tr>
 		<tr>
@@ -28,7 +28,7 @@ You can create a Magento2-Client with this information:
 				username
       </td>
       <td align="left">
-				A string. This is the username to login to the backend of the Magento2 install.  Example, `username`.
+				A string. This is the username to login to the backend of the Magento2 install.  Example, <pre>username</pre>.
       </td>
 		</tr>
 		<tr>
@@ -36,7 +36,7 @@ You can create a Magento2-Client with this information:
 				password
       </td>
       <td align="left">
-				A string. This is the password to login to the backend of the Magento2 install. Example, `password`.
+				A string. This is the password to login to the backend of the Magento2 install. Example, <pre>password</pre>.
       </td>
 		</tr>
   </tbody>
@@ -122,7 +122,7 @@ where the parameters are defined as follows:
 				callback
       </td>
       <td align="left">
-        If using promises, do not use this function.  If using callbacks, this is the callback function.  The signature of the callback is:
+        If using promises, omit this parameter.  If using callbacks, this is the callback function.  The signature of the callback is:
 <pre>
   function(err, data) { 
     if (err) {
