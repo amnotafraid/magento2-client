@@ -20,7 +20,7 @@ You can create a Magento2-Client with this information:
 				baseUrl
       </td>
       <td align="left">
-				A string. This is the URL of the front end of the Magento2 install.  Example: 'https://www.example.com'.
+				A string. This is the URL of the front end of the Magento2 install.  Example: 'https://<span></span>www.example.com'.
       </td>
 		</tr>
 		<tr>
