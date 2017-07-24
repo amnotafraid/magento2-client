@@ -3,7 +3,7 @@ Access Magento2 API
 
 ## Install with npm
 
-npm install shipperhq-client
+npm install magento2-client
 
 ## usage
 
@@ -20,7 +20,7 @@ You can create a Magento2-Client with this information:
 				baseUrl
       </td>
       <td align="left">
-				This is the URL of the front end of the Magento2 install.  Example `https://www.example.com`.
+				A string. This is the URL of the front end of the Magento2 install.  Example `https://www.example.com`.
       </td>
 		</tr>
 		<tr>
@@ -28,7 +28,7 @@ You can create a Magento2-Client with this information:
 				username
       </td>
       <td align="left">
-				This is the username to login to the backend of the Magento2 install.  Example, `username`.
+				A string. This is the username to login to the backend of the Magento2 install.  Example, `username`.
       </td>
 		</tr>
 		<tr>
@@ -36,7 +36,7 @@ You can create a Magento2-Client with this information:
 				password
       </td>
       <td align="left">
-				This is the password to login to the backend of the Magento2 install. Example, `password`.
+				A string. This is the password to login to the backend of the Magento2 install. Example, `password`.
       </td>
 		</tr>
   </tbody>
@@ -44,7 +44,7 @@ You can create a Magento2-Client with this information:
 
 ### example
 ```
-const Magento     = require('./magento2');
+const Magento = require('magento2-client');
 
 var magento = new Magento('https://www.example.com', 'username', 'password', {});
 ```
@@ -90,12 +90,12 @@ where the parameters are defined as follows:
       </td>
       <td align="left">
 				A JSON object. This is key values of url parameters.  Example: 
-```
-                { 
-                  'searchCriteria[pageSize]': 10,
-                  'searchCriteria[currentPage]': 1 
-                }
-```
+<pre>
+  { 
+    'searchCriteria[pageSize]': 10,
+    'searchCriteria[currentPage]': 1 
+  }
+</pre>
       </td>
     </tr>
     <tr>
@@ -104,17 +104,17 @@ where the parameters are defined as follows:
       </td>
       <td align="left">
 				A JSON object. This is the body of the request.  Example:
-```
-            {
-                "entity": {
-                    "carrierCode":"UPS",
-                    "orderId":23594,
-                    "parent_id":35569,
-                    "title":"ground",
-                    "trackNumber":"12345678"
-                }
-            }
-```
+<pre>
+  {
+      "entity": {
+          "carrierCode":"UPS",
+          "orderId":23594,
+          "parent_id":35569,
+          "title":"ground",
+          "trackNumber":"12345678"
+      }
+  }
+</pre>
       </td>
     </tr>
     <tr>
@@ -123,13 +123,15 @@ where the parameters are defined as follows:
       </td>
       <td align="left">
         If using promises, do not use this function.  If using callbacks, this is the callback function.  The signature of the callback is:
-          function(err, data) { 
-            if (err) {
-              // handle error
-            }
-            // do something with your data
-            console.log('data = ' + JSON.stringify(data, null, 2));
-          })
+<pre>
+  function(err, data) { 
+    if (err) {
+      // handle error
+    }
+    // do something with your data
+    console.log('data = ' + JSON.stringify(data, null, 2));
+  })
+</pre>
       </td>
 		</tr>
   </tbody>
