@@ -146,7 +146,10 @@ magento.request('GET',                      //method
                 { searchCriteria: "\'\'" }, //urlParams
                 {},                         //data
                 function(err, data) {       //callback
-  console.log('categories CALLBACK= ' + JSON.stringify(data, null, 2));
+  if (err) {
+    // TODO handle errors
+  }
+  console.log('categories = ' + JSON.stringify(data, null, 2));
 });
 
 magento.request('GET',                      //method
@@ -157,7 +160,10 @@ magento.request('GET',                      //method
                 },
                 {},                         //data
                 function(err, data) {       //callback
- console.log('orders CALLBACK = ' + JSON.stringify(data, null, 2));
+  if (err) {
+    // TODO handle errors
+  }
+  console.log('orders = ' + JSON.stringify(data, null, 2));
 });
 ```
 
