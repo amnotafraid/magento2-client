@@ -42,7 +42,7 @@ You can create a Magento2-Client with this information:
   </tbody>
 </table>
 
-* ### example
+### example
 ```
 const Magento     = require('./magento2');
 
@@ -56,7 +56,7 @@ You can look at the Magento2 API here:  [http://devdocs.magento.com/guides/v2.0/
 To use the `magento` client created above to make requests, use the request interface:
 
 ```
-			magento.request(method, url, urlParams, data, callback);
+magento.request(method, url, urlParams, data, callback);
 ```
 
 where the parameters are defined as follows:
@@ -95,6 +95,8 @@ where the parameters are defined as follows:
                   'searchCriteria[currentPage]': 1 
                 }
       </td>
+    </tr>
+    <tr>
       <td align="left">
 				data
       </td>
@@ -114,7 +116,7 @@ where the parameters are defined as follows:
 				callback
       </td>
       <td align="left">
-        If using promises, do not use this funciton.  If using callbacks, this is the callback function.  The signature of the callback is:
+        If using promises, do not use this function.  If using callbacks, this is the callback function.  The signature of the callback is:
           function(err, data) { 
             if (err) {
               // handle error
@@ -153,15 +155,18 @@ magento.request('GET',                      //method
 
 With promises:
 ```
-magento.request('GET', //method
-                '/V1/orders', //url
-                { 'searchCriteria[pageSize]': 10,
-                  'searchCriteria[currentPage]': 1 }, //urlParams
-                {}) //data
+magento.request('GET',                    //method
+                '/V1/orders',             //url
+                {                         //urlParams
+                  'searchCriteria[pageSize]': 10,
+                  'searchCriteria[currentPage]': 1 
+                }, 
+                {})                       //data
   .then((data) => { 
-    console.log('PROMISE orders = ' + JSON.stringify(data, null, 2));
+    console.log('orders = ' + JSON.stringify(data, null, 2));
   })
   .catch((err) => {
+    // TODO handle errors
     console.log(err);
   });
 
@@ -171,10 +176,10 @@ magento.request('GET', //method
                   'searchCriteria[currentPage]': 1 }, //urlParams
                 {}) //data
   .then((data) => { 
-    console.log('PROMISE products = ' + JSON.stringify(data, null, 2));
+    console.log('products = ' + JSON.stringify(data, null, 2));
   })
   .catch((err) => {
-    console.log(err);
+    // TODO handle errors
   });
 ```
 ## Notes:
