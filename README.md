@@ -20,7 +20,7 @@ You can create a Magento2-Client with this information:
 				baseUrl
       </td>
       <td align="left">
-				A string. This is the URL of the front end of the Magento2 install.  Example <pre>https://www.example.com</pre>.
+				A string. This is the URL of the front end of the Magento2 install.  Example: 'https://www.example.com'.
       </td>
 		</tr>
 		<tr>
@@ -28,7 +28,7 @@ You can create a Magento2-Client with this information:
 				username
       </td>
       <td align="left">
-				A string. This is the username to login to the backend of the Magento2 install.  Example, <pre>username</pre>.
+				A string. This is the username to login to the backend of the Magento2 install.  Example: 'username'.
       </td>
 		</tr>
 		<tr>
@@ -36,13 +36,13 @@ You can create a Magento2-Client with this information:
 				password
       </td>
       <td align="left">
-				A string. This is the password to login to the backend of the Magento2 install. Example, <pre>password</pre>.
+				A string. This is the password to login to the backend of the Magento2 install. Example: 'password'.
       </td>
 		</tr>
   </tbody>
 </table>
 
-### example
+### Example, create magento-client
 ```
 const Magento = require('magento2-client');
 
@@ -137,7 +137,7 @@ where the parameters are defined as follows:
   </tbody>
 </table>
 
-## Examples
+## Examples, call request method
 
 With callback:
 ```
