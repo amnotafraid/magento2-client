@@ -146,7 +146,7 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
               callback(null, JSON.parse(response));
             }
             else {
-              reject(response.message);
+              callback(response.message);
             }
           });
         });
