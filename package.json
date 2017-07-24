@@ -1,6 +1,6 @@
 {
   "name": "magento2-client",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "This is a client for connecting to a Magento2 API.",
   "main": "magento2.js",
   "scripts": {
