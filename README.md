@@ -61,7 +61,6 @@ magento.request(method, url, urlParams, data, callback);
 
 where the parameters are defined as follows:
 
-
 <table>
   <tbody>
     <tr>
@@ -209,3 +208,8 @@ var magento = new Magento('https://www.example.com', 'username', 'password',
   });
 
 ```
+3.  For convenience, there is a getBaseUrl function:
+```
+let baseUrl = magento.getBaseUrl();
+```
+
