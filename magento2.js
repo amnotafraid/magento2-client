@@ -86,6 +86,13 @@ Magento2.prototype.init = function(baseUrl, adminUsername, adminPassword, option
 };
 
 /**
+ * Magento2 getBaseUrl
+ *
+ */
+Magento2.prototype.getBaseUrl = function() {
+  return this.params.baseUrl;
+}
+/**
  * Magento2 request handler
  *
  * @param  string method
