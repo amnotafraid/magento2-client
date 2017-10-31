@@ -113,6 +113,11 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
     }).join('&');
   }
 
+  if (typeof(data) === 'string'){
+    console.log('WARNING! data parameter was passed as a string but a JSON object was expected.  Attempting to convert to JSON');
+    data = JSON.parse(data);
+  }
+
   totalUrl += url;
 
   if (urlParamString.length > 0) {
@@ -153,7 +158,7 @@ Magento2.prototype.request = function(method, url, urlParams, data, callback) {
               callback(null, JSON.parse(response));
             }
             else {
-              callback(response.message);
+              callback("Message: " + JSON.parse(response).message + " Parameters: " + JSON.stringify(JSON.parse(response).parameters));
             }
           });
         });
