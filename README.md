@@ -1,11 +1,11 @@
 # magento2-client
-Access Magento2 API
+Easily access Magento2 API
 
 ## Install with npm
 
 npm install magento2-client
 
-## usage
+## Usage
 
 ### Parameters
 
@@ -49,7 +49,7 @@ where the parameters are defined as follows:
 | ----------| ----------- | -------------------------------------------------------------------- |
 | method    | String      | HTTP method to use, 'POST', 'GET', 'PUT', 'DELETE'
 | url       | String      | The REST endpoint. Example: '/V1/products'.
-| urlParams | JSON Object | Key value pairs representing URL parameters. Example: <br/>   `{ 'searchCriteria[pageSize]': 10, 'searchCriteria[currentPage]': 1 } `
+| urlParams | JSON Object | Key value pairs representing URL parameters. Example: <br/>   `{ 'searchCriteria[pageSize]': 10, 'searchCriteria[currentPage]': 1 }`
 | data      | JSON Object | The body to send to the request. Example: <br/>   `{"attributeSet":{"attribute_set_name":"Pants","entity_type_id":4},"skeletonId":4}`
 | callback  | function    | The callback function to trigger after completing the request.  Follows the standard (err, data) model
 
