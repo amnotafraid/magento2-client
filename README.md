@@ -7,51 +7,35 @@ npm install magento2-client
 
 ## usage
 
-You can create a Magento2-Client with this information:
+### Parameters
 
-<table>
-  <tbody>
-    <tr>
-      <th align="center">Information</th>
-      <th align="center">Definition</th>
-    </tr>
-    <tr>
-      <td align="left">
-				baseUrl
-      </td>
-      <td align="left">
-				A string. This is the URL of the front end of the Magento2 install.  Example: 'https://<span></span>www.example.com'.
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				username
-      </td>
-      <td align="left">
-				A string. This is the username to login to the backend of the Magento2 install.  Example: 'username'.
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				password
-      </td>
-      <td align="left">
-				A string. This is the password to login to the backend of the Magento2 install. Example: 'password'.
-      </td>
-		</tr>
-  </tbody>
-</table>
+You can create a Magento2-Client with these parameters:
+
+| Parameter     | Data Type   | Definition                                                                        |
+| ------------- | ----------- | --------------------------------------------------------------------------------- |
+| baseUrl       | String      | This is the URL of the front end of the Magento installation. Example: 'https://www.example.com'. <br/>This can optionally contain a path like: 'https://www.example.com/rel-5.3.2' |
+| username      | String      | This is the username to login to the Magento2 admin console.                      |
+| password      | String      | This is the password for the supplied Magento2 admin username.                    |
+| options       | JSON Object | **Optional** Contains any optional connection parameters.                         |
+
+### Options
+
+These options are allowed in the options object parameter
+
+| Name               | Data Type | Default | Definition                                                           |
+| ------------------ | --------- | ------- | -------------------------------------------------------------------- |
+| version            | String    | V1      | Magento API version to use when getting the authorization token.     |
+| rejectUnauthorized | boolean   | true    | If set to false, self signed or bad SSL certificates will be allowed |
+
 
 ### Example, create magento-client
 ```
 const Magento = require('magento2-client');
 
-var magento = new Magento('https://www.example.com', 'username', 'password', {});
+var magento = new Magento('https://www.example.com', 'username', 'password', {version: "v1", rejectUnauthorized: true});
 ```
 
-The last parameters is an options object.  See notes below.
-
-You can look at the Magento2 API here:  [http://devdocs.magento.com/guides/v2.0/rest/list.html](http://devdocs.magento.com/guides/v2.0/rest/list.html).
+Magento API documentation:  [http://devdocs.magento.com/guides/v2.0/rest/list.html](http://devdocs.magento.com/guides/v2.0/rest/list.html).
 
 To use the `magento` client created above to make requests, use the request interface:
 
