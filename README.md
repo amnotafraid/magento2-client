@@ -1,57 +1,41 @@
 # magento2-client
-Access Magento2 API
+Easily access Magento2 API
 
 ## Install with npm
 
 npm install magento2-client
 
-## usage
+## Usage
 
-You can create a Magento2-Client with this information:
+### Parameters
 
-<table>
-  <tbody>
-    <tr>
-      <th align="center">Information</th>
-      <th align="center">Definition</th>
-    </tr>
-    <tr>
-      <td align="left">
-				baseUrl
-      </td>
-      <td align="left">
-				A string. This is the URL of the front end of the Magento2 install.  Example: 'https://<span></span>www.example.com'.
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				username
-      </td>
-      <td align="left">
-				A string. This is the username to login to the backend of the Magento2 install.  Example: 'username'.
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				password
-      </td>
-      <td align="left">
-				A string. This is the password to login to the backend of the Magento2 install. Example: 'password'.
-      </td>
-		</tr>
-  </tbody>
-</table>
+You can create a Magento2-Client with these parameters:
+
+| Parameter     | Data Type   | Definition                                                                        |
+| ------------- | ----------- | --------------------------------------------------------------------------------- |
+| baseUrl       | String      | This is the URL of the front end of the Magento installation. Example: 'https://www.example.com'. <br/>This can optionally contain a base path like: 'https://www.example.com/rel-5.3.2' |
+| username      | String      | This is the username to login to the Magento2 admin console.                      |
+| password      | String      | This is the password for the supplied Magento2 admin username.                    |
+| options       | JSON Object | **Optional** Contains any optional connection parameters.                         |
+
+### Options
+
+These options are allowed in the options object parameter
+
+| Name               | Data Type | Default | Definition                                                           |
+| ------------------ | --------- | ------- | -------------------------------------------------------------------- |
+| version            | String    | V1      | Magento API version to use when getting the authorization token.     |
+| rejectUnauthorized | boolean   | true    | If set to false, self signed or bad SSL certificates will be allowed |
+
 
 ### Example, create magento-client
 ```
 const Magento = require('magento2-client');
 
-var magento = new Magento('https://www.example.com', 'username', 'password', {});
+var magento = new Magento('https://www.example.com', 'username', 'password', {version: "v1", rejectUnauthorized: true});
 ```
 
-The last parameters is an options object.  See notes below.
-
-You can look at the Magento2 API here:  [http://devdocs.magento.com/guides/v2.0/rest/list.html](http://devdocs.magento.com/guides/v2.0/rest/list.html).
+Magento API documentation:  [http://devdocs.magento.com/guides/v2.0/rest/list.html](http://devdocs.magento.com/guides/v2.0/rest/list.html).
 
 To use the `magento` client created above to make requests, use the request interface:
 
@@ -61,80 +45,13 @@ magento.request(method, url, urlParams, data, callback);
 
 where the parameters are defined as follows:
 
-<table>
-  <tbody>
-    <tr>
-      <th align="center">Parameter</th>
-      <th align="center">Definition</th>
-    </tr>
-    <tr>
-      <td align="left">
-				method
-      </td>
-      <td align="left">
-				A string. 'POST', 'GET', 'PUT', 'DELETE'
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				url
-      </td>
-      <td align="left">
-				A string. The REST endpoint. Example: '/V1/products'.
-      </td>
-		</tr>
-		<tr>
-      <td align="left">
-				urlParams
-      </td>
-      <td align="left">
-				A JSON object. This is key values of url parameters.  Example: 
-<pre>
-  { 
-    'searchCriteria[pageSize]': 10,
-    'searchCriteria[currentPage]': 1 
-  }
-</pre>
-      </td>
-    </tr>
-    <tr>
-      <td align="left">
-				data
-      </td>
-      <td align="left">
-				A JSON object. This is the body of the request.  Example:
-<pre>
-  {
-      "entity": {
-          "carrierCode":"UPS",
-          "orderId":23594,
-          "parent_id":35569,
-          "title":"ground",
-          "trackNumber":"12345678"
-      }
-  }
-</pre>
-      </td>
-    </tr>
-    <tr>
-      <td align="left">
-				callback
-      </td>
-      <td align="left">
-        If using promises, omit this parameter.  If using callbacks, this is the callback function.  The signature of the callback is:
-<pre>
-  function(err, data) { 
-    if (err) {
-      // handle error
-    }
-    // do something with your data
-    console.log('data = ' + JSON.stringify(data, null, 2));
-  })
-</pre>
-      </td>
-		</tr>
-  </tbody>
-</table>
+| Parameter | Data Type   | Definition                                                           |
+| ----------| ----------- | -------------------------------------------------------------------- |
+| method    | String      | HTTP method to use, 'POST', 'GET', 'PUT', 'DELETE'
+| url       | String      | The REST endpoint. Example: '/V1/products'.
+| urlParams | JSON Object | Key value pairs representing URL parameters. Example: <br/>   `{ 'searchCriteria[pageSize]': 10, 'searchCriteria[currentPage]': 1 }`
+| data      | JSON Object | The body to send to the request. Example: <br/>   `{"attributeSet":{"attribute_set_name":"Pants","entity_type_id":4},"skeletonId":4}`
+| callback  | function    | The callback function to trigger after completing the request.  Follows the standard (err, data) model
 
 ## Examples, call request method
 
@@ -200,15 +117,15 @@ magento.request('GET',                    //method
 ## Notes:
 
 1. A real Magento install should use https protocol.  This module will work with an http site with a warning... Sometimes, you just need to test things out...
-2. There is a DEFAULT_VERSION set at 'V1'.  This is used to get the authorization token.  If you need to overide this, you can set it in the options of the `new` parameters.  For example, if you want to use 'V2', you could do this.  This is only for getting the Authorization token with the username and password.  All the other routes are sent in the url parameter of the request method.
+2. An error with a message 'unable to verify the first certificate' indicates that the server is using a self signed certificate. Setting the rejectUnauthorized option to **false** will bypass this and display a warning, but this should only be used in test environments.
 ```
-var magento = new Magento('https://www.example.com', 'username', 'password', 
-  {
-    'options': 'V2'
-  });
-
+var magento = new Magento("https://www.example.com", "username", "password", {"rejectUnauthorized": false});
 ```
-3.  For convenience, there is a getBaseUrl function:
+3. There is a DEFAULT_VERSION set at 'V1'.  This is used to get the authorization token.  If you need to overide this, you can set it in the options of the `new` parameters.  For example, if you want to use 'V2', you could do this.  This is only for getting the Authorization token with the username and password.  All the other routes are sent in the url parameter of the request method.
+```
+var magento = new Magento("https://www.example.com", "username", "password", {"options": "V2"});
+```
+4.  For convenience, there is a getBaseUrl function:
 ```
 let baseUrl = magento.getBaseUrl();
 ```
