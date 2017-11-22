@@ -17,7 +17,7 @@ const DEFAULT_VERSION = 'V1'
  * @param string href
  */
 function getLocation(href) {
-    let match = href.match(/^(https)?\:\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
+    let match = href.match(/^(http|https)?\:\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/);
     return match && {
         href: href,
         protocol: match[1],
